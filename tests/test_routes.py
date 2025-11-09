@@ -178,3 +178,11 @@ class TestProductRoutes(TestCase):
         data = response.get_json()
         # logging.debug("data = %s", data)
         return len(data)
+
+    def test_get_product(self):
+        """Get a product"""
+        test_product = self._create_products(1)[0]
+        response = self.client.get(f"{BASE_URL}/{test_product.id}")
+        assert response.status_code == status.HTTP_200_OK
+        data = response.get_json()
+        assert data["name"] == test_product.name
