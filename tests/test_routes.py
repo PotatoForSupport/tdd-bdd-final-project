@@ -186,3 +186,26 @@ class TestProductRoutes(TestCase):
         assert response.status_code == status.HTTP_200_OK
         data = response.get_json()
         assert data["name"] == test_product.name
+
+    def test_get_product_not_found(self):
+        """Try to get a missing product"""
+        response = self.client.get(f"{BASE_URL}/0")
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+    
+    def test_update_product(self):
+        """Update an existing product"""
+        test_product = ProductFactory()
+        response = self.client.post(f"{BASE_URL}", json=test_product.serialize())
+        assert response.status_code == status.HTTP_201_CREATED
+
+        new_product = response.get_json()
+        new_product["description"] = "unknown"
+        response = self.client.put(f"{BASE_URL}/{new_product['id']}", json=new_product)
+        assert response.status_code == status.HTTP_200_OK
+        updated_product = response.get_json()
+        assert updated_product["description"] == "unknown"
+    
+    def test_delete_product(self):
+        """Delete a product"""
+        products = self._create_products(5)
+        

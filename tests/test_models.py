@@ -102,14 +102,16 @@ class TestProductModel(unittest.TestCase):
         self.assertEqual(new_product.category, product.category)
 
     def test_read_a_product(self):
+        """It should read a product"""
         product = ProductFactory()
         product.id = None
         product.create()
         assert product.id is not None
         found = Product.find(product.id)
         assert found is product
-    
+
     def test_update_a_product(self):
+        """It should update a product"""
         product = ProductFactory()
         product.id = None
         product.create()
@@ -123,8 +125,9 @@ class TestProductModel(unittest.TestCase):
         assert len(products) == 1
         assert products[0].id == original_id
         assert products[0].description == "Test"
-    
+
     def test_delete_a_product(self):
+        """It should delete a product"""
         product = ProductFactory()
         product.id = None
         product.create()
@@ -132,8 +135,9 @@ class TestProductModel(unittest.TestCase):
         assert len(Product.all()) == 1
         product.delete()
         assert len(Product.all()) == 0
-    
+
     def test_list_all_products(self):
+        """It should list all products"""
         products = Product.all()
         assert len(products) == 0
         products_list = ProductFactory.create_batch(5)
@@ -143,6 +147,7 @@ class TestProductModel(unittest.TestCase):
         assert len(products) == 5
 
     def test_find_product_by_name(self):
+        """It should find a product by name"""
         products = ProductFactory.create_batch(5)
         for product in products:
             product.create()
@@ -152,8 +157,9 @@ class TestProductModel(unittest.TestCase):
         assert found.count() == count
         for product in found:
             assert product.name == target_name
-    
+
     def test_find_product_by_availability(self):
+        """It should find a product by availability"""
         products = ProductFactory.create_batch(10)
         for product in products:
             product.create()
@@ -165,6 +171,7 @@ class TestProductModel(unittest.TestCase):
             assert product.available == target_available
 
     def test_find_product_by_category(self):
+        """It should find a product by category"""
         products = ProductFactory.create_batch(10)
         for product in products:
             product.create()
@@ -174,8 +181,9 @@ class TestProductModel(unittest.TestCase):
         assert found.count() == count
         for product in found:
             assert product.category == target_category
-    
+
     def test_find_by_price(self):
+        """It should find a product by price"""
         products = ProductFactory.create_batch(10)
         for product in products:
             product.create()
